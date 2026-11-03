@@ -26,17 +26,12 @@
 }
 
 .inicio-presentacion h2 {
-  margin: 14px 0 16px;
+  margin: 14px 0 28px;
   color: #785A46;
   font-size: clamp(25px, 3.8vw, 39px);
 }
 
-.inicio-presentacion .inicio-descripcion {
-  max-width: 480px;
-  margin: 0 auto 24px;
-  color: #72675E;
-  font-size: 17px;
-}
+
 
 .inicio-presentacion button {
   margin: 0;

@@ -1,20 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
-import { browserLocalPersistence, onAuthStateChanged, setPersistence, signInAnonymously } from 'firebase/auth'
+import { onAuthStateChanged } from 'firebase/auth'
 import { addDoc, collection, deleteDoc, doc, onSnapshot, runTransaction, updateDoc } from 'firebase/firestore'
 import { auth, db } from '../firebase'
-
-// Comparte el inicio de sesión entre montajes de StrictMode para no crear cuentas duplicadas.
-let inicioSesion = null
-function iniciarSesion() {
-  if (!inicioSesion) {
-    inicioSesion = (async () => {
-      await auth.authStateReady()
-      await setPersistence(auth, browserLocalPersistence)
-      if (!auth.currentUser) await signInAnonymously(auth)
-    })().finally(() => { inicioSesion = null })
-  }
-  return inicioSesion
-}
 
 function mensajeError(error) {
   if (!error.code && error.message) return error.message
@@ -28,6 +15,8 @@ function mensajeError(error) {
 
 export default function useDatosUsuario() {
   const [uid, setUid] = useState(null)
+  const [usuario, setUsuario] = useState(null)
+  const [comprobandoSesion, setComprobandoSesion] = useState(true)
   const [viajes, setViajes] = useState([])
   const [lugares, setLugares] = useState([])
   const [cargando, setCargando] = useState({ viajes: true, porConocer: true })
@@ -42,25 +31,26 @@ export default function useDatosUsuario() {
     const cancelarAuth = onAuthStateChanged(auth, (usuario) => {
       cancelarListas.forEach(cancelar => cancelar())
       cancelarListas = []
+      if (!activo) return
+      setComprobandoSesion(false)
+      setUsuario(usuario ? { uid: usuario.uid, email: usuario.email, isAnonymous: usuario.isAnonymous } : null)
       setUid(usuario?.uid || null)
       setViajes([])
       setLugares([])
       setCargando({ viajes: true, porConocer: true })
       setErrores({})
-      if (!usuario) {
-        iniciarSesion().catch(error => {
-          if (!activo) return
-          setErrores({ sesion: mensajeError(error) })
-          setCargando({ viajes: false, porConocer: false })
-        })
+      if (!usuario || usuario.isAnonymous) {
+        setCargando({ viajes: false, porConocer: false })
         return
       }
       for (const [nombre, actualizar] of [['viajes', setViajes], ['porConocer', setLugares]]) {
         cancelarListas.push(onSnapshot(collection(db, 'usuarios', usuario.uid, nombre), (resultado) => {
+          if (!activo || auth.currentUser?.uid !== usuario.uid) return
           actualizar(resultado.docs.map(documento => ({ ...documento.data(), id: documento.id })))
           setCargando(anterior => ({ ...anterior, [nombre]: false }))
           setErrores(anterior => ({ ...anterior, [nombre]: '' }))
         }, (error) => {
+          if (!activo || auth.currentUser?.uid !== usuario.uid) return
           setCargando(anterior => ({ ...anterior, [nombre]: false }))
           setErrores(anterior => ({ ...anterior, [nombre]: `No pudimos cargar ${nombre === 'viajes' ? 'los viajes' : 'los destinos pendientes'}. ${mensajeError(error)}` }))
         }))
@@ -106,7 +96,7 @@ export default function useDatosUsuario() {
 
   async function ejecutarOperacion(nombre, operacion) {
     if (operacionEnCurso.current) return false
-    if (!uid || auth.currentUser?.uid !== uid || cargando[nombre] || errores[nombre]) {
+    if (!uid || auth.currentUser?.isAnonymous || auth.currentUser?.uid !== uid || cargando[nombre] || errores[nombre]) {
       setErrores(anterior => ({ ...anterior, operacion: 'Esperá a que se carguen los datos. Si hubo un error, usá Reintentar conexión.' }))
       return false
     }
@@ -131,5 +121,12 @@ export default function useDatosUsuario() {
     setIntento(anterior => anterior + 1)
   }
 
-  return { viajes, lugares, cargando, errores, guardando, guardarRegistro, eliminarRegistro, convertirLugarEnViaje, reintentar }
+  function actualizarUsuario() {
+    const actual = auth.currentUser
+    setUsuario(actual ? { uid: actual.uid, email: actual.email, isAnonymous: actual.isAnonymous } : null)
+    setIntento(anterior => anterior + 1)
+  }
+
+  const mismaCuenta = (usuario?.uid || null) === uid
+  return { usuario, comprobandoSesion, actualizarUsuario, viajes: mismaCuenta ? viajes : [], lugares: mismaCuenta ? lugares : [], cargando: mismaCuenta ? cargando : { viajes: true, porConocer: true }, errores, guardando, guardarRegistro, eliminarRegistro, convertirLugarEnViaje, reintentar }
 }

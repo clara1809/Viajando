@@ -14,7 +14,7 @@ Interfaz en español, diseño responsive y navegación inferior fija en celulare
 
 ## Tecnologías
 
-React, Vite, JavaScript, CSS, Firebase Authentication anónimo y Cloud Firestore.
+React, Vite, JavaScript, CSS, Firebase Authentication anónimo y correo/contraseña y Cloud Firestore.
 Las tipografías IvyMode y Finder se cargan mediante Adobe Fonts.
 Los datos geográficos provienen de Natural Earth; su fuente se documenta en
 [src/data/README.md](src/data/README.md).
@@ -39,7 +39,7 @@ Reiniciá el servidor de desarrollo si cambiás `.env`.
 
 ## Firebase
 
-Habilitá el proveedor **Anónimo** en Authentication y creá Cloud Firestore.
+Habilitá los proveedores **Anónimo** y **Correo electrónico/contraseña** en Authentication y creá Cloud Firestore.
 Los datos se guardan en las subcolecciones de cada usuario autenticado:
 
 ```text
@@ -52,8 +52,16 @@ correspondientes a la configuración definida para este proyecto. El archivo
 local no publica reglas automáticamente: comprobá que coincida con las reglas
 activas de la consola. No se incluyen credenciales de administración.
 
-La sesión anónima se conserva en el mismo navegador. Otro navegador o la
-eliminación de sus datos pueden generar una identidad diferente.
+La pantalla inicial permite registrarse o iniciar sesión con correo y contraseña.
+La navegación y la homepage se muestran solo después de iniciar sesión.
+Crear una cuenta desde una sesión anónima vincula el correo al mismo UID y conserva
+sus documentos. Iniciar sesión con una cuenta existente muestra solo los documentos
+de esa cuenta: no se migran ni fusionan datos. Las contraseñas las gestiona Firebase.
+
+La sesión se conserva al recargar. Al cerrar sesión se vuelve a la pantalla de
+acceso sin crear una cuenta anónima. Para recuperar los viajes, iniciá sesión con
+el mismo correo.
+Un usuario anónimo sin vincular no puede recuperar su sesión desde otro navegador.
 
 `.env` no se sube al repositorio. Las variables con prefijo `VITE_` forman parte
 del frontend compilado; el acceso a los documentos está protegido por las reglas.

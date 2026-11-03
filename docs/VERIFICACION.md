@@ -44,3 +44,25 @@ las estadísticas, el arrastre real con mouse y los tooltips del mapa.
 - La conversión utiliza una transacción en las colecciones actuales del usuario.
   El ID `desde-pendiente-{idDelDestino}` permite reintentar sin crear duplicados.
 - No se cambiaron credenciales, configuración ni reglas de Firebase.
+
+## Cuentas y pantalla inicial de acceso
+
+1. Sin sesión, comprobar que aparece VIAJANDO, el eslogan y el formulario de acceso,
+   sin navegación ni homepage. No se debe crear una cuenta anónima automáticamente.
+2. Registrar un correo nuevo, completar la contraseña y su confirmación. Debe
+   abrirse Inicio con la navegación de cuatro opciones, perfil y Cerrar sesión,
+   sin mostrar el correo en la barra.
+3. Crear un viaje, recargar y comprobar la persistencia de sesión y datos.
+4. Cerrar sesión: debe volver al acceso y permanecer allí al recargar, sin crear
+   una identidad anónima. Iniciar sesión con el mismo correo recupera los viajes.
+5. Si existe una sesión anónima anterior, debe permanecer en la pantalla de acceso.
+   Crear una cuenta con un correo nuevo debe vincularla con linkWithCredential,
+   manteniendo su UID y los documentos existentes. No se fusionan cuentas.
+6. Probar campos vacíos, contraseñas que no coinciden, contraseña incorrecta,
+   correo existente y conexión interrumpida. Los errores no deben borrar datos.
+7. Revisar acceso y navegación autenticada en celular, tablet y computadora;
+   usar Tab y Enter para recorrer los campos y enviar el formulario.
+
+Las pruebas automatizadas y la revisión de Chrome usan autenticación simulada.
+No se registraron usuarios reales durante esas comprobaciones. Las credenciales,
+variables de entorno y reglas de seguridad del proyecto permanecen iguales.

@@ -1,6 +1,7 @@
 
 import { lazy, Suspense, useRef, useState } from 'react'
 import Inicio from './components/Inicio'
+import AccesoCuenta from './components/AccesoCuenta'
 import useDatosUsuario from './hooks/useDatosUsuario'
 import FotoRecuerdo from './components/FotoRecuerdo'
 import { FotosDelViaje } from './components/GaleriaRecuerdos'
@@ -9,10 +10,10 @@ import './App.css'
 
 const MapaRecuerdos = lazy(() => import('./components/MapaRecuerdos'))
 
-function App() {
+function Aplicacion({ datos }) {
   const [seccion, setSeccion] = useState('inicio')
 
-  const { viajes, lugares, cargando, errores, guardando, guardarRegistro, eliminarRegistro, convertirLugarEnViaje, reintentar } = useDatosUsuario()
+  const { usuario, actualizarUsuario, viajes, lugares, cargando, errores, guardando, guardarRegistro, eliminarRegistro, convertirLugarEnViaje, reintentar } = datos
   const [busqueda, setBusqueda] = useState('')
   const [orden, setOrden] = useState('recientes')
   const viajesOrdenados = filtrarViajes(viajes, busqueda, orden)
@@ -245,7 +246,7 @@ function iniciarViajeDesdeLugar(destinoPendiente) {
     <div>
       <nav className="navegacion" aria-label="Navegación principal">
         <h3>
-          <button className="marca-inicio" type="button" aria-label="VIAJANDO: volver a Inicio" onClick={() => navegarA('inicio')}>
+          <button className="marca-inicio" translate="no" type="button" aria-label="VIAJANDO: volver a Inicio" onClick={() => navegarA('inicio')}>
             VIAJANDO
           </button>
         </h3>
@@ -267,6 +268,7 @@ function iniciarViajeDesdeLugar(destinoPendiente) {
             Por conocer
           </button>
         </div>
+        <AccesoCuenta usuario={usuario} bloqueado={guardando} actualizarUsuario={actualizarUsuario} />
       </nav>
 
       <main>
@@ -476,10 +478,18 @@ function iniciarViajeDesdeLugar(destinoPendiente) {
   </section>
 )}
 
-        <footer className="pie-aplicacion"><span>VIAJANDO</span><p>Tu mundo, tus historias.</p></footer>
+        <footer className="pie-aplicacion"><span translate="no">VIAJANDO</span><p>Tu mundo, tus historias.</p></footer>
       </main>
     </div>
   )
+}
+
+function App() {
+  const datos = useDatosUsuario()
+  if (datos.comprobandoSesion) return <main className="pantalla-acceso"><header className="bienvenida-acceso"><h1 translate="no">VIAJANDO</h1><h2>Tu mundo, tus historias</h2></header><p role="status">Comprobando tu sesión…</p></main>
+  if (!datos.usuario || datos.usuario.isAnonymous) return <AccesoCuenta key={datos.usuario?.uid || 'acceso'} usuario={datos.usuario} actualizarUsuario={datos.actualizarUsuario} />
+  // Un cambio de UID descarta borradores y selecciones de la cuenta anterior.
+  return <Aplicacion key={datos.usuario?.uid || 'sin-sesion'} datos={datos} />
 }
 
 export default App

@@ -60,10 +60,8 @@ export default function Inicio({ explorarRecuerdos, viajes, lugares, cargando, e
     <div className="inicio-pagina">
       <section className="inicio-hero" aria-labelledby="titulo-inicio">
         <div className="inicio-presentacion">
-          <p className="inicio-antetitulo">Un diario para tu próxima historia</p>
-          <h1 id="titulo-inicio">VIAJANDO</h1>
+          <h1 id="titulo-inicio" translate="no">VIAJANDO</h1>
           <h2>Tu mundo, tus historias</h2>
-          <p className="inicio-descripcion">Guardá tus viajes, reviví tus recuerdos y dale un lugar a todo eso que todavía soñás conocer.</p>
           <button type="button" onClick={explorarRecuerdos}>Explorá mis recuerdos <span aria-hidden="true">↗</span></button>
         </div>
         <figure className="inicio-panoramica">
@@ -142,7 +140,7 @@ export default function Inicio({ explorarRecuerdos, viajes, lugares, cargando, e
           </details>
           <details>
             <summary>¿Mis viajes se conservan al cerrar la página?</summary>
-            <p>Sí, una vez confirmado el guardado, tus viajes y destinos quedan almacenados. Volvé desde el mismo navegador para recuperarlos. Si borrás sus datos o usás otro navegador, la sesión anónima será diferente y no verás los mismos registros.</p>
+            <p>Sí, una vez confirmado el guardado, tus viajes y destinos quedan asociados a tu cuenta. La sesión se conserva al recargar. Si entrás desde otro navegador o cerraste sesión, iniciá sesión con el mismo correo para recuperarlos.</p>
           </details>
           <details>
             <summary>¿Cómo se actualiza mi mapa de países visitados?</summary>

@@ -94,7 +94,7 @@ function crearHookSimulado() {
   const render = () => { cursor = 0; refCursor = 0; return contexto.usarDatos() }
   render(); efecto(); observarAuth(auth.currentUser)
   escuchas.forEach(escucha => escucha.actualizar({ docs: [] }))
-  return { render, documentos, escuchas, fallar: valor => { fallar = valor } }
+  return { render, documentos, escuchas, cambiarUsuario: usuario => { auth.currentUser = usuario; observarAuth(usuario) }, fallar: valor => { fallar = valor } }
 }
 
 test('CRUD privado, protección de doble envío y edición compatible', async () => {
@@ -133,4 +133,34 @@ test('¡Ya lo conocí!: falla sin borrar, éxito atómico y reintento sin duplic
   assert.equal(await prueba.render().convertirLugarEnViaje('destino1', { destino: 'No sobrescribir' }), true)
   assert.equal(prueba.documentos.size, 1)
   assert.equal(prueba.documentos.get(rutaViaje).destino, 'Kioto')
+})
+
+
+test('Cambiar de cuenta descarta listas previas y rechaza snapshots de otro UID', () => {
+  const prueba = crearHookSimulado()
+  prueba.escuchas[0].actualizar({ docs: [{ id: 'privado', data: () => ({ destino: 'París' }) }] })
+  assert.equal(prueba.render().viajes.length, 1)
+  prueba.cambiarUsuario({ uid: 'otra-persona', email: 'otra@ejemplo.com', isAnonymous: false })
+  assert.equal(prueba.render().viajes.length, 0)
+  assert.equal(prueba.render().lugares.length, 0)
+  assert.equal(prueba.escuchas[2].ruta, 'usuarios/otra-persona/viajes')
+  prueba.escuchas[0].actualizar({ docs: [{ id: 'privado', data: () => ({ destino: 'París' }) }] })
+  assert.equal(prueba.render().viajes.length, 0)
+  prueba.escuchas[2].actualizar({ docs: [] })
+  assert.equal(prueba.render().cargando.viajes, false)
+})
+
+
+test('Sin sesión o con un anónimo previo no se consultan documentos ni se inicia una cuenta nueva', () => {
+  const prueba = crearHookSimulado()
+  const cantidad = prueba.escuchas.length
+  prueba.cambiarUsuario(null)
+  assert.equal(prueba.render().usuario, null)
+  assert.equal(prueba.render().comprobandoSesion, false)
+  assert.equal(prueba.render().cargando.viajes, false)
+  assert.equal(prueba.escuchas.length, cantidad)
+  prueba.cambiarUsuario({ uid: 'anonimo-anterior', isAnonymous: true })
+  assert.equal(prueba.render().usuario.uid, 'anonimo-anterior')
+  assert.equal(prueba.escuchas.length, cantidad)
+  assert.equal(prueba.render().viajes.length, 0)
 })
