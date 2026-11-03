@@ -1,0 +1,95 @@
+.mapa-recuerdos {
+  width: 100%;
+  max-width: 720px;
+  margin: 36px auto 0;
+  padding: 20px clamp(8px, 2vw, 20px) 16px;
+  background: #F8F5F0;
+  color: #785A46;
+  text-align: center;
+  border-radius: 12px;
+}
+
+.mapa-recuerdos h2 {
+  margin: 0 0 14px;
+  color: #785A46;
+  font-weight: normal;
+  font-size: clamp(21px, 3vw, 26px);
+}
+
+.mapa-recuerdos .contador-paises {
+  margin: 12px 0 0;
+  color: #785A46;
+  text-align: center;
+  font-size: 14px;
+}
+
+.mapa-recuerdos svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1080 / 450;
+}
+
+.mapa-recuerdos .pais-mapa {
+  fill: #E8E5E0;
+  stroke: #B5ADA3;
+  stroke-width: 0.35px;
+}
+
+.mapa-recuerdos .pais-visitado {
+  fill: #654936;
+}
+
+.mapa-recuerdos .pais-mapa:hover {
+  stroke: #785A46;
+  stroke-width: 0.7px;
+}
+
+.mapa-recuerdos .aviso-paises {
+  margin: 20px 0 0;
+  color: #785A46;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+/* Se renderiza fuera del mapa para evitar recortes por sus contenedores. */
+.mapa-etiqueta {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 200;
+  max-width: min(240px, calc(100vw - 16px));
+  padding: 7px 11px;
+  border: 1px solid #E0D6CA;
+  border-radius: 6px;
+  background: #EDE5DA;
+  color: #654936;
+  font-family: "finder", sans-serif;
+  font-size: 13px;
+  line-height: 1.4;
+  box-shadow: 0 2px 8px rgba(65, 45, 30, 0.08);
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 140ms ease, visibility 140ms ease;
+}
+
+.mapa-etiqueta-visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mapa-etiqueta { transition: none; }
+}
+
+@media (max-width: 600px) {
+  .mapa-recuerdos {
+    margin-top: 24px;
+    padding: 16px 4px 12px;
+  }
+
+  .mapa-recuerdos h2 {
+    margin-bottom: 10px;
+  }
+}
