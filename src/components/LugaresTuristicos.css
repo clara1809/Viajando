@@ -1,0 +1,23 @@
+.descubrir-lugares { margin-top: 72px; padding-top: 36px; border-top: 1px solid var(--borde); text-align: left; }
+.descubrir-lugares .formulario { max-width: none; margin: 0 0 32px; padding: clamp(24px, 4vw, 40px); background: var(--arena); box-shadow: none; }
+.descubrir-lugares .formulario h2 { margin-bottom: 8px; font-size: clamp(36px, 4vw, 48px); }
+.descubrir-lugares .formulario input { background: var(--papel); }
+.descubrir-lugares .formulario button { min-width: 180px; }
+.descubrir-lugares h4 { color: var(--carbon); font-size: clamp(30px, 3vw, 40px); margin: 40px 0 24px; }
+.lugares-cuadricula { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; text-align: left; }
+.lugar-turistico { min-width: 0; overflow: hidden; border: 1px solid var(--borde); border-radius: 10px; background: var(--papel); box-shadow: 0 4px 20px #292C2703; transition: border-color 180ms ease, box-shadow 180ms ease; }
+.lugar-turistico:hover { border-color: var(--oliva); box-shadow: 0 6px 24px #292C2707; }
+.lugar-turistico > div { padding: clamp(22px, 3vw, 30px); height: 100%; display: flex; flex-direction: column; align-items: flex-start; }
+.lugar-turistico h3 { margin: 0 0 16px; color: var(--carbon); font-size: 30px; line-height: 1.1; }
+.lugar-turistico p { font-size: 13px; line-height: 1.75; margin: 0 0 12px; }
+.lugar-turistico h3 + p { color: var(--oliva-profundo); font-size: 12px; }
+.lugar-turistico a { margin-top: auto; padding-top: 12px; color: var(--oliva-profundo); font-size: 12px; overflow-wrap: anywhere; }
+.lugar-turistico button { margin: 24px 0 0; width: 100%; min-height: 46px; padding: 12px 16px; }
+.descubrir-lugares .lugares-creditos { max-width: 850px; color: var(--texto-suave); font-size: 11px; line-height: 1.8; margin: 24px 0 0; }
+.descubrir-lugares > p[role], .descubrir-lugares [role='alert'] { padding: 16px 20px; border: 1px solid var(--borde); border-radius: 6px; background: var(--arena); font-size: 14px; }
+.descubrir-lugares [role='alert'] { color: var(--error); background: #F6EBE5; border-color: #DCC1B5; }
+@media (max-width: 1000px) { .lugares-cuadricula { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) {
+  .descubrir-lugares { margin-top: 48px; padding-top: 28px; }
+  .lugares-cuadricula { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+}

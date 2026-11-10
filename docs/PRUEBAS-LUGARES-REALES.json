@@ -1,0 +1,239 @@
+{
+  "fecha": "2026-11-09",
+  "comando": "node scripts/probar-lugares.mjs",
+  "tipo": "Respuestas reales de Nominatim y Wikidata; sin escrituras en Firestore",
+  "resultados": [
+    {
+      "busqueda": "Tokio, Japón",
+      "http": 200,
+      "duracionMs": 10682,
+      "ciudad": {
+        "id": "relation-1543125",
+        "osmId": "relation-1543125",
+        "nombre": "Tokio",
+        "ciudad": "Tokio",
+        "pais": "Japón",
+        "categoria": "Ciudad o destino",
+        "lat": 35.6768601,
+        "lon": 139.7638947,
+        "ubicacion": "Tokio, Japón",
+        "url": "https://www.openstreetmap.org/relation/1543125",
+        "origen": "nominatim"
+      },
+      "cantidad": 11,
+      "ejemplos": [
+        {
+          "id": "Q140067005",
+          "wikidataId": "Q140067005",
+          "nombre": "Yūrakuchō Museum",
+          "categoria": "Museo",
+          "ciudad": "Tokio",
+          "pais": "Japón",
+          "lat": 35.676725,
+          "lon": 139.763775,
+          "url": "https://www.wikidata.org/wiki/Q140067005",
+          "origen": "wikidata"
+        },
+        {
+          "id": "Q11582309",
+          "wikidataId": "Q11582309",
+          "nombre": "Mitsuo Aida Museum",
+          "categoria": "Museo",
+          "ciudad": "Tokio",
+          "pais": "Japón",
+          "lat": 35.67694444,
+          "lon": 139.7635,
+          "url": "https://www.wikidata.org/wiki/Q11582309",
+          "origen": "wikidata"
+        },
+        {
+          "id": "Q3815458",
+          "wikidataId": "Q3815458",
+          "nombre": "Mitsubishi Ichigokan Museum",
+          "categoria": "Museo",
+          "ciudad": "Tokio",
+          "pais": "Japón",
+          "lat": 35.678355,
+          "lon": 139.763255,
+          "url": "https://www.wikidata.org/wiki/Q3815458",
+          "origen": "wikidata"
+        }
+      ],
+      "estado": "OK"
+    },
+    {
+      "busqueda": "Roma, Italia",
+      "http": 200,
+      "duracionMs": 6276,
+      "ciudad": {
+        "id": "relation-41485",
+        "osmId": "relation-41485",
+        "nombre": "Roma",
+        "ciudad": "Roma",
+        "pais": "Italia",
+        "categoria": "Ciudad o destino",
+        "lat": 41.8933203,
+        "lon": 12.4829321,
+        "ubicacion": "Roma, Roma Capitale, Lacio, Italia",
+        "url": "https://www.openstreetmap.org/relation/41485",
+        "origen": "nominatim"
+      },
+      "cantidad": 12,
+      "ejemplos": [
+        {
+          "id": "Q1984985",
+          "wikidataId": "Q1984985",
+          "nombre": "arch of Marcus Aurelius",
+          "categoria": "Monumento",
+          "ciudad": "Roma",
+          "pais": "Italia",
+          "lat": 41.8944,
+          "lon": 12.4842,
+          "url": "https://www.wikidata.org/wiki/Q1984985",
+          "origen": "wikidata"
+        },
+        {
+          "id": "Q162353",
+          "wikidataId": "Q162353",
+          "nombre": "Arco de Septimio Severo",
+          "categoria": "Monumento",
+          "ciudad": "Roma",
+          "pais": "Italia",
+          "lat": 41.892777777,
+          "lon": 12.484722222,
+          "url": "https://www.wikidata.org/wiki/Q162353",
+          "origen": "wikidata"
+        },
+        {
+          "id": "Q635182",
+          "wikidataId": "Q635182",
+          "nombre": "Estatua ecuestre de Domiciano",
+          "categoria": "Monumento",
+          "ciudad": "Roma",
+          "pais": "Italia",
+          "lat": 41.8923,
+          "lon": 12.4853,
+          "url": "https://www.wikidata.org/wiki/Q635182",
+          "origen": "wikidata"
+        }
+      ],
+      "estado": "OK"
+    },
+    {
+      "busqueda": "Ámsterdam, Países Bajos",
+      "http": 200,
+      "duracionMs": 2437,
+      "ciudad": {
+        "id": "relation-271110",
+        "osmId": "relation-271110",
+        "nombre": "Ámsterdam",
+        "ciudad": "Ámsterdam",
+        "pais": "Países Bajos",
+        "categoria": "Ciudad o destino",
+        "lat": 52.3730796,
+        "lon": 4.8924534,
+        "ubicacion": "Ámsterdam, Amsterdam, Holanda Septentrional, Países Bajos",
+        "url": "https://www.openstreetmap.org/relation/271110",
+        "origen": "nominatim"
+      },
+      "cantidad": 7,
+      "ejemplos": [
+        {
+          "id": "Q1419675",
+          "wikidataId": "Q1419675",
+          "nombre": "Nieuwe Kerk",
+          "categoria": "Museo",
+          "ciudad": "Ámsterdam",
+          "pais": "Países Bajos",
+          "lat": 52.373889,
+          "lon": 4.891944,
+          "url": "https://www.wikidata.org/wiki/Q1419675",
+          "origen": "wikidata"
+        },
+        {
+          "id": "Q2289998",
+          "wikidataId": "Q2289998",
+          "nombre": "Naatje of Dam Square",
+          "categoria": "Monumento",
+          "ciudad": "Ámsterdam",
+          "pais": "Países Bajos",
+          "lat": 52.373113,
+          "lon": 4.892592,
+          "url": "https://www.wikidata.org/wiki/Q2289998",
+          "origen": "wikidata"
+        },
+        {
+          "id": "Q3275333",
+          "wikidataId": "Q3275333",
+          "nombre": "Madame Tussauds Amsterdam",
+          "categoria": "Museo",
+          "ciudad": "Ámsterdam",
+          "pais": "Países Bajos",
+          "lat": 52.37259,
+          "lon": 4.8926,
+          "url": "https://www.wikidata.org/wiki/Q3275333",
+          "origen": "wikidata"
+        }
+      ],
+      "estado": "OK"
+    },
+    {
+      "busqueda": "Buenos Aires, Argentina",
+      "http": 200,
+      "duracionMs": 5031,
+      "ciudad": {
+        "id": "relation-1224652",
+        "osmId": "relation-1224652",
+        "nombre": "Buenos Aires",
+        "ciudad": "Buenos Aires",
+        "pais": "Argentina",
+        "categoria": "Ciudad o destino",
+        "lat": -34.6095579,
+        "lon": -58.3887904,
+        "ubicacion": "Buenos Aires, Comuna 1, Ciudad Autónoma de Buenos Aires, Argentina",
+        "url": "https://www.openstreetmap.org/relation/1224652",
+        "origen": "nominatim"
+      },
+      "cantidad": 12,
+      "ejemplos": [
+        {
+          "id": "Q111697425",
+          "wikidataId": "Q111697425",
+          "nombre": "Homenaje a José Manuel Estrada",
+          "categoria": "Monumento",
+          "ciudad": "Buenos Aires",
+          "pais": "Argentina",
+          "lat": -34.609451,
+          "lon": -58.387294,
+          "url": "https://www.wikidata.org/wiki/Q111697425",
+          "origen": "wikidata"
+        },
+        {
+          "id": "Q111697424",
+          "wikidataId": "Q111697424",
+          "nombre": "Homenaje a Don Manuel Estrada",
+          "categoria": "Monumento",
+          "ciudad": "Buenos Aires",
+          "pais": "Argentina",
+          "lat": -34.609451,
+          "lon": -58.387294,
+          "url": "https://www.wikidata.org/wiki/Q111697424",
+          "origen": "wikidata"
+        },
+        {
+          "id": "Q111696479",
+          "wikidataId": "Q111696479",
+          "nombre": "Homenaje al Milenio de Polonia",
+          "categoria": "Monumento",
+          "ciudad": "Buenos Aires",
+          "pais": "Argentina",
+          "lat": -34.609178,
+          "lon": -58.3894,
+          "url": "https://www.wikidata.org/wiki/Q111696479",
+          "origen": "wikidata"
+        }
+      ],
+      "estado": "OK"
+    }
+  ]
+}

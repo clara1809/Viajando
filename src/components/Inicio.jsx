@@ -60,8 +60,7 @@ export default function Inicio({ explorarRecuerdos, viajes, lugares, cargando, e
     <div className="inicio-pagina">
       <section className="inicio-hero" aria-labelledby="titulo-inicio">
         <div className="inicio-presentacion">
-          <h1 id="titulo-inicio" translate="no">VIAJANDO</h1>
-          <h2>Tu mundo, tus historias</h2>
+          <h1 id="titulo-inicio">Tu próxima <em>historia.</em></h1>
           <button type="button" onClick={explorarRecuerdos}>Explorá mis recuerdos <span aria-hidden="true">↗</span></button>
         </div>
         <figure className="inicio-panoramica">
@@ -70,7 +69,6 @@ export default function Inicio({ explorarRecuerdos, viajes, lugares, cargando, e
             alt="Un lago entre montañas y un pueblo junto a la costa"
             fetchPriority="high" onError={usarImagenReemplazo}
           />
-          <figcaption>Hay lugares que se quedan con vos.</figcaption>
         </figure>
       </section>
 

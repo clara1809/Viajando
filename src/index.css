@@ -1,72 +1,37 @@
-
-* {
-  box-sizing: border-box;
+:root {
+  --marfil: #F8F6F1;
+  --arena: #E9E4DA;
+  --arena-suave: #EAE5DB;
+  --salvia-claro: #E4E8DD;
+  --oliva: #747B63;
+  --oliva-profundo: #596149;
+  --carbon: #292C27;
+  --terracota: #B68D73;
+  --texto-suave: #64685D;
+  --borde: #D8D9CD;
+  --papel: #FFFDF8;
+  --error: #8B4638;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'DM Sans', system-ui, sans-serif;
+  color: var(--carbon);
+  font-family: var(--sans);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
-
-body {
-  margin: 0;
-  min-width: 320px;
-  min-height: 100vh;
-  background-color: #F8F5F0;
-  font-family: "finder", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-  overflow-wrap: anywhere;
-}
-
-img,
-svg {
-  max-width: 100%;
-}
-
-button,
-input,
-textarea,
-select {
-  font-family: inherit;
-  font-weight: inherit;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-.navegacion,
-.destino-recuerdo {
-  font-family: "ivymode", sans-serif;
-  font-weight: 400;
-}
-
-strong,
-b {
-  font-weight: 400;
-}
-
-#root {
-  width: 100%;
-}
-
-button:focus-visible,
-input:focus-visible,
-textarea:focus-visible,
-select:focus-visible,
-summary:focus-visible,
-[tabindex="0"]:focus-visible {
-  outline: 2px solid #785A46;
-  outline-offset: 3px;
-}
-
-button:disabled {
-  opacity: 0.6;
-  cursor: wait;
-}
-
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; min-height: 100vh; background: var(--marfil); overflow-wrap: anywhere; }
+img, svg { max-width: 100%; }
+button, input, textarea, select { font: inherit; }
+h1, h2, h3, h4, h5, h6 { font-family: var(--serif); font-weight: 500; text-wrap: balance; }
+strong, b { font-weight: 600; }
+#root { width: 100%; }
+::selection { background: var(--arena); color: var(--carbon); }
+a { color: var(--oliva-profundo); text-underline-offset: 4px; text-decoration-thickness: 1px; }
+a:hover { color: var(--carbon); }
+:where(button, a, input, textarea, select, summary, [tabindex='0']):focus-visible { outline: 2px solid var(--oliva-profundo); outline-offset: 4px; }
+button:disabled { opacity: .55; cursor: not-allowed; }
+[hidden] { display: none !important; }
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation: none !important;
-    transition: none !important;
-    scroll-behavior: auto !important;
-  }
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }

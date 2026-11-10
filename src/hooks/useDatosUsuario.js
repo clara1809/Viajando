@@ -70,6 +70,36 @@ export default function useDatosUsuario() {
     })
   }
 
+  async function guardarLugarTuristico(lugar) {
+    const wikidataId = lugar.wikidataId || null
+    const catalogoId = lugar.catalogoId || null
+    const osmId = lugar.osmId || (!catalogoId && !wikidataId ? lugar.id : null)
+    if (wikidataId ? !/^Q[1-9][0-9]*$/.test(wikidataId) : catalogoId ? !/^[a-z0-9-]+$/.test(catalogoId) : !/^(node|way|relation)-\d+$/.test(osmId || '')) return false
+    return ejecutarOperacion('porConocer', async usuarioId => {
+      const referencia = doc(db, 'usuarios', usuarioId, 'porConocer', wikidataId ? `wikidata-${wikidataId}` : catalogoId ? `catalogo-${catalogoId}` : `osm-${osmId}`)
+      await runTransaction(db, async transaccion => {
+        const existente = await transaccion.get(referencia)
+        if (existente.exists()) return
+        // Conserva compatibilidad con lugares OSM guardados anteriormente.
+        if (catalogoId && /^(node|way|relation)-\d+$/.test(osmId || '')) {
+          const previo = await transaccion.get(doc(db, 'usuarios', usuarioId, 'porConocer', `osm-${osmId}`))
+          if (previo.exists()) return
+        }
+        const datos = {
+          nombre: lugar.nombre, pais: lugar.pais || '', motivo: '',
+          categoria: lugar.categoria || '', ciudad: lugar.ciudad || '',
+          ...(catalogoId ? { catalogoId, origen: 'catalogo-local' } : {}),
+          ...(osmId ? { osmId } : {}),
+          ...(wikidataId ? { wikidataId, origen: 'wikidata' } : lugar.origen === 'nominatim' ? { origen: 'nominatim' } : {}),
+        }
+        if (Number.isFinite(lugar.lat) && Number.isFinite(lugar.lon)) {
+          Object.assign(datos, { lat: lugar.lat, lon: lugar.lon, ubicacion: lugar.ubicacion || '', fuente: lugar.url || '', fuenteUbicacion: wikidataId ? 'Wikidata' : 'Nominatim / OpenStreetMap' })
+        }
+        transaccion.set(referencia, datos)
+      })
+    })
+  }
+
   async function eliminarRegistro(nombre, id) {
     return ejecutarOperacion(nombre, usuarioId => deleteDoc(doc(db, 'usuarios', usuarioId, nombre, id)))
   }
@@ -128,5 +158,5 @@ export default function useDatosUsuario() {
   }
 
   const mismaCuenta = (usuario?.uid || null) === uid
-  return { usuario, comprobandoSesion, actualizarUsuario, viajes: mismaCuenta ? viajes : [], lugares: mismaCuenta ? lugares : [], cargando: mismaCuenta ? cargando : { viajes: true, porConocer: true }, errores, guardando, guardarRegistro, eliminarRegistro, convertirLugarEnViaje, reintentar }
+  return { usuario, comprobandoSesion, actualizarUsuario, viajes: mismaCuenta ? viajes : [], lugares: mismaCuenta ? lugares : [], cargando: mismaCuenta ? cargando : { viajes: true, porConocer: true }, errores, guardando, guardarRegistro, eliminarRegistro, guardarLugarTuristico, convertirLugarEnViaje, reintentar }
 }

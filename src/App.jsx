@@ -1,6 +1,8 @@
 
 import { lazy, Suspense, useRef, useState } from 'react'
 import Inicio from './components/Inicio'
+import LugaresTuristicos from './components/LugaresTuristicos'
+import { crearConsultaLugares } from './services/lugares'
 import AccesoCuenta from './components/AccesoCuenta'
 import useDatosUsuario from './hooks/useDatosUsuario'
 import FotoRecuerdo from './components/FotoRecuerdo'
@@ -12,8 +14,9 @@ const MapaRecuerdos = lazy(() => import('./components/MapaRecuerdos'))
 
 function Aplicacion({ datos }) {
   const [seccion, setSeccion] = useState('inicio')
+  const [consultarLugares] = useState(() => crearConsultaLugares())
 
-  const { usuario, actualizarUsuario, viajes, lugares, cargando, errores, guardando, guardarRegistro, eliminarRegistro, convertirLugarEnViaje, reintentar } = datos
+  const { usuario, actualizarUsuario, viajes, lugares, cargando, errores, guardando, guardarRegistro, eliminarRegistro, guardarLugarTuristico, convertirLugarEnViaje, reintentar } = datos
   const [busqueda, setBusqueda] = useState('')
   const [orden, setOrden] = useState('recientes')
   const viajesOrdenados = filtrarViajes(viajes, busqueda, orden)
@@ -247,15 +250,11 @@ function iniciarViajeDesdeLugar(destinoPendiente) {
       <nav className="navegacion" aria-label="Navegación principal">
         <h3>
           <button className="marca-inicio" translate="no" type="button" aria-label="VIAJANDO: volver a Inicio" onClick={() => navegarA('inicio')}>
-            VIAJANDO
+            <img className="logo-viajando" src="/viajando.logo.svg" alt="VIAJANDO" width="80" height="80" />
           </button>
         </h3>
 
         <div>
-          <button aria-current={seccion === 'inicio' ? 'page' : undefined} onClick={() => navegarA('inicio')}>
-            Inicio
-          </button>
-
           <button aria-current={seccion === 'viajes' ? 'page' : undefined} onClick={() => navegarA('viajes')}>
             Mis viajes
           </button>
@@ -282,7 +281,7 @@ function iniciarViajeDesdeLugar(destinoPendiente) {
         {seccion === 'inicio' && <Inicio explorarRecuerdos={() => navegarA('recuerdos')} viajes={viajes} lugares={lugares} cargando={cargando.viajes || cargando.porConocer} error={Boolean(errores.sesion || errores.viajes || errores.porConocer)} />}
 
         {seccion === 'viajes' && (
-          <section>
+          <section className="seccion-viajes">
             <h1>Mis viajes</h1>
             <p>Guardá tus aventuras y recuerdos.</p>
 
@@ -409,7 +408,7 @@ function iniciarViajeDesdeLugar(destinoPendiente) {
 
 
 {seccion === 'destinos' && (
-  <section>
+  <section className="seccion-destinos">
     <h1>Por conocer</h1>
     <p>Todos esos lugares que todavía soñás visitar.</p>
 
@@ -454,6 +453,8 @@ function iniciarViajeDesdeLugar(destinoPendiente) {
       <button type="button" disabled={guardando} onClick={limpiarFormularioLugar}>Cancelar edición</button>
     )}
 
+    <LugaresTuristicos consultar={consultarLugares} guardar={guardarLugarTuristico} guardados={lugares} bloqueado={ocupadoLugares} />
+
     <div className="lista-viajes">
       <h2>Mis destinos pendientes</h2>
 
@@ -466,6 +467,9 @@ function iniciarViajeDesdeLugar(destinoPendiente) {
           <h3>{lugar.nombre}</h3>
           <p>{lugar.pais}</p>
           <p>{lugar.motivo}</p>
+          {lugar.categoria && <p>{lugar.categoria}</p>}
+          {lugar.catalogoId && <p>{lugar.ciudad} · Selección local de VIAJANDO</p>}
+          {lugar.ubicacion && <p>{lugar.ubicacion}</p>}
 
           <button disabled={ocupadoLugares || ocupadoViajes} onClick={() => iniciarViajeDesdeLugar(lugar)}>¡Ya lo conocí!</button>
           <button disabled={ocupadoLugares} onClick={() => editarLugar(lugar)}>Editar</button>
@@ -486,7 +490,7 @@ function iniciarViajeDesdeLugar(destinoPendiente) {
 
 function App() {
   const datos = useDatosUsuario()
-  if (datos.comprobandoSesion) return <main className="pantalla-acceso"><header className="bienvenida-acceso"><h1 translate="no">VIAJANDO</h1><h2>Tu mundo, tus historias</h2></header><p role="status">Comprobando tu sesión…</p></main>
+  if (datos.comprobandoSesion) return <main className="pantalla-acceso"><header className="bienvenida-acceso"><img className="logo-acceso" src="/viajando.logo.svg" alt="" width="72" height="72" /><h1 translate="no">VIAJANDO</h1><h2>Tu mundo, tus historias</h2></header><p role="status">Comprobando tu sesión…</p></main>
   if (!datos.usuario || datos.usuario.isAnonymous) return <AccesoCuenta key={datos.usuario?.uid || 'acceso'} usuario={datos.usuario} actualizarUsuario={datos.actualizarUsuario} />
   // Un cambio de UID descarta borradores y selecciones de la cuenta anterior.
   return <Aplicacion key={datos.usuario?.uid || 'sin-sesion'} datos={datos} />

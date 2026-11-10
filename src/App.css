@@ -1,492 +1,134 @@
-
-main {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: clamp(40px, 6vw, 80px) clamp(16px, 3vw, 30px);
-  text-align: center;
+main { max-width: 1280px; margin: 0 auto; padding: 72px clamp(20px, 4vw, 56px) 48px; text-align: center; }
+h1 { margin: 0 0 12px; color: var(--carbon); font-size: clamp(46px, 6vw, 76px); line-height: 1.05; letter-spacing: -.025em; }
+h2 { color: var(--carbon); font-size: clamp(32px, 4vw, 48px); line-height: 1.12; letter-spacing: -.02em; }
+p { font-size: 16px; color: var(--texto-suave); line-height: 1.8; }
+button { min-height: 46px; max-width: 100%; margin: 8px; padding: 13px 23px; border: 1px solid transparent; border-radius: 6px; background: var(--oliva-profundo); color: #FFFDF8; font-size: 14px; font-weight: 500; line-height: 1.5; cursor: pointer; white-space: normal; transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease, box-shadow 180ms ease; }
+button:hover:not(:disabled) { background: #48503B; }
+.navegacion { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 112px; padding: 16px clamp(20px, 4vw, 56px); background: var(--marfil); border-bottom: 1px solid var(--borde); }
+.navegacion h3 { margin: 0; flex-shrink: 0; font-family: var(--serif); font-size: 30px; letter-spacing: .12em; }
+.navegacion > div { display: flex; align-items: center; gap: 6px; min-width: 0; max-width: 100%; }
+.navegacion > div:not(.acceso-cuenta) { margin-left: auto; }
+.navegacion button { margin: 0; padding: 10px 14px; background: transparent; color: var(--texto-suave); font-size: 17px; border-radius: 4px; }
+.navegacion button:hover:not(:disabled) { color: var(--carbon); background: var(--arena); }
+.navegacion button[aria-current='page'] { color: var(--oliva-profundo); background: #E5E8DD; box-shadow: inset 0 -2px var(--oliva); }
+.navegacion .marca-inicio { display: block; width: 80px; height: 80px; min-height: 0; padding: 0; background: transparent; border: 0; border-radius: 0; box-shadow: none; }
+.navegacion .logo-viajando { display: block; width: 80px; height: 80px; object-fit: contain; transition: opacity 180ms ease; }
+.navegacion .marca-inicio:hover:not(:disabled) { background: transparent; }
+@media (hover: hover) { .navegacion .marca-inicio:hover .logo-viajando { opacity: .88; } }
+main > section > h1 { margin-bottom: 14px; }
+main > section > h1 + p { max-width: 560px; margin: 0 auto 40px; }
+.formulario { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 700px; margin: 40px auto; padding: clamp(24px, 4vw, 44px); background: var(--papel); border: 1px solid var(--borde); border-radius: 12px; text-align: left; box-shadow: 0 8px 32px #292C2704; }
+.formulario h2 { margin: 0 0 18px; font-size: 36px; }
+/* Acento salvia compartido por los formularios de viajes y destinos. */
+.seccion-viajes > .formulario,
+.seccion-destinos > .formulario {
+  background: linear-gradient(to bottom, #E9EDE3 0, #F1F3EB 100px, var(--papel) 220px);
+  border-top: 3px solid var(--oliva);
 }
-
-h1 {
-  font-size: clamp(34px, 6vw, 64px);
-  color: #785A46;
-  letter-spacing: clamp(1px, 0.4vw, 5px);
-}
-
-h2 {
-  font-size: clamp(24px, 3.5vw, 32px);
-  color: #333333;
-}
-
-p {
-  font-size: 18px;
-  color: #6F6359;
-  line-height: 1.6;
-}
-
-button {
-  background-color: #785A46;
-  color: white;
-  border: none;
-  padding: 15px 30px;
-  margin: 10px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 16px;
-  min-height: 44px;
-  max-width: 100%;
-  white-space: normal;
-}
-
-button:hover {
-  background-color: #A48169;
-}
-
-
-.navegacion {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px clamp(16px, 3vw, 40px);
-  gap: 20px;
-  background-color: #EDE5DA;
-}
-
-.navegacion h3 {
-  color: #785A46;
-  font-size: 24px;
-  letter-spacing: 2px;
-  margin: 0;
-}
-
-.navegacion button {
-  background: transparent;
-  color: #785A46;
-  margin: 0 5px;
-}
-
-.navegacion button:hover {
-  background-color: #D9C8B8;
-}
-
-.navegacion .marca-inicio {
-  margin: 0;
-  padding: 0;
-  font-size: inherit;
-  letter-spacing: inherit;
-}
-
-.navegacion .marca-inicio:hover {
-  background: transparent;
-}
-
-.navegacion .marca-inicio:focus-visible {
-  outline: 2px solid #785A46;
-  outline-offset: 4px;
-}
-
-@media (max-width: 900px) {
-  .navegacion {
-    flex-direction: column;
-    gap: 15px;
-    padding: 20px 16px;
-  }
-
-  .navegacion button {
-    padding: 10px;
-    font-size: 14px;
-  }
-
-}
-
-
-.formulario {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  width: 100%;
-  max-width: 500px;
-  margin: 40px auto;
-  padding: clamp(18px, 4vw, 30px);
-  background-color: #EDE5DA;
-  border-radius: 12px;
-}
-
-.formulario h2 {
-  font-size: 24px;
-  margin: 0 0 10px;
-}
-
-.formulario input,
-.formulario textarea {
-  width: 100%;
-  padding: 14px;
-  border: 1px solid #D5C5B8;
-  border-radius: 8px;
-  font-size: 16px;
-  font-family: inherit;
-  background-color: white;
-  color: #333333;
-}
-
-.formulario input,
-.formulario textarea {
-  min-width: 0;
-  max-width: 100%;
-}
-
-.formulario input[type="date"] {
-  display: block;
-  min-height: 48px;
-}
-
-.formulario textarea {
-  min-height: 100px;
-  resize: vertical;
-}
-
-.formulario button {
-  margin: 0;
-}
-
-.lista-viajes {
-  margin-top: 50px;
-}
-
-.tarjeta-viaje {
-  background-color: white;
-  padding: clamp(18px, 4vw, 25px);
-  margin: 20px auto;
-  border-radius: 12px;
-  max-width: 500px;
-  text-align: left;
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
-}
-
-.tarjeta-viaje h3 {
-  color: #785A46;
-  font-size: 24px;
-  margin-top: 0;
-}
-
-/* Recuerdos: el mismo listado de viajes, presentado en un carrusel. */
-.navegacion > div {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  min-width: 0;
-  max-width: 100%;
-}
-
-.seccion-recuerdos {
-  max-width: 1040px;
-  margin: -24px auto 0;
-  min-width: 0;
-  text-align: left;
-}
-
-.seccion-recuerdos > h1 {
-  margin: 0 0 12px;
-  font-size: clamp(34px, 5vw, 52px);
-  letter-spacing: 1px;
-}
-
-.seccion-recuerdos > p {
-  margin: 0 0 28px;
-}
-
-.carrusel-recuerdos {
-  display: flex;
-  align-items: flex-start;
-  gap: 24px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  padding: 4px 0 16px;
-  position: relative;
-  max-width: 100%;
-  overscroll-behavior-x: contain;
-  cursor: grab;
-  user-select: none;
-  scrollbar-width: thin;
-  scrollbar-color: #D5C5B8 transparent;
-}
-
-.carrusel-recuerdos.arrastrando {
-  scroll-snap-type: none;
-  cursor: grabbing;
-}
-
-.carrusel-recuerdos.arrastrando * {
-  cursor: grabbing;
-}
-
-.recuerdo-unico {
-  justify-content: center;
-  cursor: default;
-}
-
-.tarjeta-recuerdo {
-  flex: 0 0 min(520px, 86%);
-  min-width: 0;
-  overflow: hidden;
-  scroll-snap-align: start;
-  background: white;
-  border-radius: 10px;
-  text-align: left;
-  border: 1px solid #EDE5DA;
-}
-
-.abrir-recuerdo {
-  display: block;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  background: white;
-  color: #785A46;
-  text-align: left;
-  border-radius: 0;
-}
-
-.abrir-recuerdo:hover {
-  background: #F8F5F0;
-}
-
-.abrir-recuerdo img {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-}
-
-.ayuda-foto,
-.error-foto {
-  font-size: 14px;
-  line-height: 1.5;
-  color: #785A46;
-}
-
-.ayuda-foto {
-  margin: 0;
-  text-align: left;
-}
-
-.error-foto {
-  display: block;
-  padding: 16px 24px 0;
-}
-
-.datos-recuerdo {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 24px;
-  overflow-wrap: anywhere;
-}
-
-.destino-recuerdo {
-  font-size: 30px;
-  font-weight: normal;
-}
-
-.enlace-experiencia {
-  font-size: 14px;
-  text-decoration: underline;
-}
-
-.experiencia-recuerdo {
-  padding: 0 24px;
-  overflow-wrap: anywhere;
-}
-
-.experiencia-recuerdo h2 {
-  font-size: 20px;
-}
-
-.experiencia-recuerdo p {
-  white-space: pre-wrap;
-}
-
-.acciones-recuerdo {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  padding: 0 0 24px;
-}
-
-.acciones-recuerdo button {
-  margin: 0;
-  padding: 10px 16px;
-}
-
-.carrusel-recuerdos:focus-visible,
-.abrir-recuerdo:focus-visible,
-.acciones-recuerdo button:focus-visible {
-  outline: 3px solid #785A46;
-  outline-offset: 3px;
-}
-
-@media (max-width: 600px) {
-  html {
-    scroll-padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px));
-  }
-
-  main {
-    padding-bottom: calc(104px + env(safe-area-inset-bottom, 0px));
-  }
-
-  .navegacion {
-    position: fixed;
-    inset: auto 0 0;
-    z-index: 100;
-    padding: 8px 8px calc(8px + env(safe-area-inset-bottom, 0px));
-    gap: 0;
-    border-top: 1px solid #D5C5B8;
-  }
-
-  .navegacion h3 {
-    display: none;
-  }
-
-  .navegacion > div {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    width: 100%;
-    max-width: none;
-    gap: 4px;
-  }
-
-  .navegacion button {
-    margin: 0;
-    width: 100%;
-    min-width: 0;
-    min-height: 52px;
-    padding: 8px 2px;
-    font-size: clamp(12px, 3.3vw, 15px);
-    line-height: 1.3;
-    overflow-wrap: normal;
-  }
-
-  .navegacion button[aria-current="page"] {
-    background-color: #D9C8B8;
-  }
-
-  .navegacion button:focus-visible {
-    outline: 2px solid #785A46;
-    outline-offset: -2px;
-  }
-
-  .formulario {
-    margin: 28px auto;
-  }
-
-  .lista-viajes {
-    margin-top: 32px;
-  }
-
-  .tarjeta-recuerdo {
-    flex-basis: 92%;
-  }
-
-  .recuerdo-unico .tarjeta-recuerdo {
-    flex-basis: 100%;
-  }
-
-  .seccion-recuerdos {
-    margin-top: -12px;
-  }
-
-  .datos-recuerdo {
-    padding: 20px;
-  }
-
-  .experiencia-recuerdo {
-    padding: 0 20px;
-  }
-
-  .acciones-recuerdo button {
-    flex: 1 1 90px;
-  }
-
-  .destino-recuerdo {
-    font-size: 26px;
-  }
-}
-
-/* Diario: controles y mensajes dentro de las pantallas existentes. */
-.formulario label {
-  text-align: left;
-  color: #654936;
-  font-size: 15px;
-}
-
-.formulario textarea[rows] { min-height: 180px; }
-.formulario .error-campo,
-.error-campo { margin: 0; text-align: left; color: #713D2C; font-size: 14px; }
+.seccion-viajes > .formulario h2,
+.seccion-destinos > .formulario h2 { color: var(--oliva-profundo); }
+.formulario label { margin-top: 8px; color: var(--carbon); font-size: 13px; font-weight: 500; }
+.formulario input, .formulario textarea, .filtros-recuerdos input, .filtros-recuerdos select { width: 100%; min-width: 0; max-width: 100%; min-height: 48px; padding: 14px 16px; color: var(--carbon); background: var(--marfil); border: 1px solid var(--borde); border-radius: 5px; font-family: var(--sans); font-size: 16px; transition: border-color 180ms ease, background-color 180ms ease; }
+.formulario input:hover, .formulario textarea:hover { border-color: var(--oliva); }
+.formulario input:focus, .formulario textarea:focus { border-color: var(--oliva-profundo); background: #fff; }
+.formulario input::placeholder, .formulario textarea::placeholder { color: #76796E; }
+.formulario textarea { min-height: 110px; resize: vertical; }
+.formulario textarea[rows] { min-height: 190px; }
+.formulario input[type='date'] { display: block; min-height: 50px; }
+.formulario button { margin: 12px 0 0; align-self: flex-start; min-width: 180px; }
+.ayuda-foto, .error-foto { font-size: 12px; line-height: 1.7; color: var(--texto-suave); }
+.ayuda-foto { margin: 0; text-align: left; }
+.error-foto { display: block; padding: 16px 28px 0; }
+.formulario .error-campo, .error-campo { margin: 0; text-align: left; color: var(--error); font-size: 13px; }
 .error-campo:empty { display: none; }
-.formulario [aria-invalid="true"] { border-color: #713D2C; }
-.mensaje-confirmacion {
-  margin: 0 0 48px;
-  padding: 14px 20px;
-  background: #EDE5DA;
-  color: #654936;
-  border-radius: 8px;
-  font-size: 16px;
-}
-
-.filtros-recuerdos {
-  display: flex;
-  align-items: flex-end;
-  gap: 16px;
-  margin: 24px 0;
-}
+.formulario [aria-invalid='true'] { border-color: var(--error); }
+.mensaje-confirmacion, main > p[role='status'], main > p[role='alert'] { padding: 16px 20px; border-radius: 6px; border: 1px solid var(--borde); font-size: 14px; line-height: 1.7; }
+.mensaje-confirmacion { margin: 0 0 32px; color: var(--oliva-profundo); background: #E9EDE2; border-color: #CFD6C3; }
+main > p[role='status'] { background: var(--arena); }
+main > p[role='alert'] { color: var(--error); background: #F6EBE5; border-color: #DCC1B5; }
+.lista-viajes { margin-top: 72px; padding-top: 40px; border-top: 1px solid var(--borde); }
+.lista-viajes > h2 { margin: 0 0 32px; }
+.tarjeta-viaje { max-width: 700px; margin: 20px auto; padding: clamp(24px, 4vw, 36px); background: var(--papel); border: 1px solid var(--borde); border-radius: 10px; text-align: left; box-shadow: 0 4px 20px #292C2704; }
+.tarjeta-viaje h3 { color: var(--carbon); font-size: 36px; margin: 0 0 12px; }
+.tarjeta-viaje p { font-size: 14px; margin: 8px 0; }
+.tarjeta-viaje > p:first-of-type { color: var(--oliva-profundo); font-size: 12px; text-transform: uppercase; letter-spacing: .1em; }
+.tarjeta-viaje button { margin: 16px 8px 0 0; padding: 10px 16px; font-size: 13px; }
+.tarjeta-viaje button + button { color: var(--oliva-profundo); background: transparent; border-color: var(--borde); }
+.tarjeta-viaje button + button:hover:not(:disabled) { background: var(--arena); border-color: var(--oliva); }
+.estado-vacio { max-width: 650px; margin: 36px auto; padding: 40px 24px; background: var(--arena); border: 1px solid var(--borde); border-radius: 10px; text-align: center; }
+.estado-vacio p { margin-top: 0; }
+/* Álbum: se conservan el arrastre, el scroll independiente y la separación de 24 px. */
+.seccion-recuerdos { min-width: 0; text-align: left; }
+.seccion-recuerdos > h1 { margin-bottom: 32px; }
+.filtros-recuerdos { display: flex; align-items: flex-end; gap: 20px; margin: 0 0 36px; padding: 24px; border-block: 1px solid var(--borde); background: var(--arena-suave); border-radius: 6px; }
 .filtros-recuerdos > div { flex: 1; min-width: 0; }
-.filtros-recuerdos label { display: block; margin-bottom: 8px; color: #654936; font-size: 14px; }
-.filtros-recuerdos input,
-.filtros-recuerdos select {
-  width: 100%; min-width: 0; min-height: 46px; padding: 12px;
-  border: 1px solid #D5C5B8; border-radius: 8px;
-  background: #fff; color: #654936; font-size: 16px;
-}
-.estado-vacio {
-  padding: 28px 20px;
-  border: 1px solid #E0D6CA;
-  border-radius: 12px;
-  text-align: center;
-  max-width: 600px;
-  margin: 28px auto;
-}
-.estado-vacio p { margin-top: 0; color: #72675E; }
-.experiencia-recuerdo ul { padding-left: 20px; line-height: 1.7; color: #654936; }
-.fotos-del-viaje {
-  display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory;
-  max-width: 100%; padding-bottom: 12px; margin: 20px 0;
-  scrollbar-width: thin; scrollbar-color: #D5C5B8 transparent;
-}
+.filtros-recuerdos label { display: block; margin-bottom: 10px; color: var(--texto-suave); font-size: 12px; font-weight: 500; }
+.carrusel-recuerdos { position: relative; display: flex; align-items: flex-start; gap: 24px; max-width: 100%; overflow-x: auto; padding: 4px 0 24px; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; cursor: grab; user-select: none; scrollbar-width: thin; scrollbar-color: var(--oliva) transparent; }
+.carrusel-recuerdos.arrastrando { scroll-snap-type: none; cursor: grabbing; }
+.carrusel-recuerdos.arrastrando * { cursor: grabbing; }
+.recuerdo-unico { justify-content: center; cursor: default; }
+.tarjeta-recuerdo { flex: 0 0 min(480px, 82%); min-width: 0; overflow: hidden; scroll-snap-align: start; background: var(--papel); border: 1px solid var(--borde); border-radius: 10px; text-align: left; box-shadow: 0 6px 24px #292C2705; }
+.abrir-recuerdo { display: block; width: 100%; margin: 0; padding: 12px; color: var(--carbon); background: var(--papel); border: 0; border-radius: 0; text-align: left; }
+.abrir-recuerdo:hover:not(:disabled) { background: #F1F0E8; }
+.abrir-recuerdo img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 4px; }
+.datos-recuerdo { display: flex; flex-direction: column; gap: 8px; padding: 20px 14px 16px; }
+.destino-recuerdo { font-family: var(--serif); font-size: 36px; line-height: 1.1; font-weight: 500; }
+.datos-recuerdo > span:not(.destino-recuerdo):not(.enlace-experiencia), .datos-recuerdo time { color: var(--texto-suave); font-size: 12px; letter-spacing: .08em; }
+.enlace-experiencia { margin-top: 12px; color: var(--oliva-profundo); font-size: 13px; text-decoration: underline; text-underline-offset: 4px; }
+.experiencia-recuerdo { padding: 0 30px; overflow-wrap: anywhere; }
+.experiencia-recuerdo h2 { padding-top: 20px; margin-top: 0; font-size: 30px; }
+.experiencia-recuerdo p { font-size: 15px; white-space: pre-wrap; }
+.experiencia-recuerdo ul { padding-left: 20px; color: var(--texto-suave); line-height: 1.8; font-size: 14px; }
+.acciones-recuerdo { display: flex; flex-wrap: wrap; gap: 10px; padding: 12px 0 30px; }
+.acciones-recuerdo button { margin: 0; padding: 10px 18px; }
+.acciones-recuerdo button + button { background: transparent; color: var(--oliva-profundo); border-color: var(--borde); }
+.acciones-recuerdo button + button:hover:not(:disabled) { background: var(--arena); }
+.fotos-del-viaje { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; max-width: 100%; padding-bottom: 12px; margin: 24px 0; scrollbar-width: thin; scrollbar-color: var(--oliva) transparent; }
 .fotos-del-viaje figure { margin: 0; flex: 0 0 90%; min-width: 0; scroll-snap-align: start; }
-.fotos-del-viaje img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 8px; }
-.fotos-del-viaje figcaption { font-size: 12px; color: #72675E; padding-top: 8px; }
-.galeria-recuerdos { margin-top: 44px; }
-.galeria-recuerdos h2 { color: #785A46; font-size: clamp(26px, 4vw, 36px); }
-.cuadricula-fotos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-.cuadricula-fotos button {
-  min-width: 0; margin: 0; padding: 0; overflow: hidden; border-radius: 8px;
-  background: #EDE5DA; color: #654936; text-align: left;
-}
-.cuadricula-fotos button:hover { background: #E0D6CA; }
+.fotos-del-viaje img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 4px; }
+.fotos-del-viaje figcaption { font-size: 12px; color: var(--texto-suave); padding-top: 10px; }
+.galeria-recuerdos { margin-top: 72px; }
+.galeria-recuerdos h2 { color: var(--carbon); font-size: 44px; }
+.cuadricula-fotos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.cuadricula-fotos button { min-width: 0; margin: 0; padding: 10px; overflow: hidden; border: 1px solid var(--borde); border-radius: 6px; background: var(--papel); color: var(--carbon); text-align: left; }
+.cuadricula-fotos button:hover:not(:disabled) { background: var(--arena); }
 .cuadricula-fotos img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
-.cuadricula-fotos button > span { display: block; padding: 12px; }
-.pie-aplicacion { margin-top: 56px; padding-top: 24px; border-top: 1px solid #E0D6CA; color: #785A46; }
-.pie-aplicacion > span { font-family: "ivymode", sans-serif; font-size: 22px; letter-spacing: 2px; }
-.pie-aplicacion p { font-size: 14px; color: #72675E; }
-
-@media (max-width: 900px) {
+.cuadricula-fotos button > span { display: block; padding: 16px 6px 8px; font-family: var(--serif); font-size: 26px; }
+.pie-aplicacion { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin-top: 96px; padding-top: 28px; border-top: 1px solid var(--borde); text-align: left; }
+.pie-aplicacion > span { color: var(--carbon); font-family: var(--serif); font-size: 26px; letter-spacing: .13em; }
+.pie-aplicacion p { margin: 0; font-size: 12px; letter-spacing: .04em; }
+@media (max-width: 1050px) {
+  .navegacion { gap: 12px; flex-wrap: wrap; }
+  .navegacion > div:not(.acceso-cuenta) { margin-left: auto; }
+  .navegacion button { padding-inline: 10px; }
+}
+@media (max-width: 760px) {
+  .navegacion { justify-content: center; }
+  .navegacion > div:not(.acceso-cuenta) { margin-left: 0; }
+  main { padding-top: 48px; }
   .cuadricula-fotos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 600px) {
-  .filtros-recuerdos { flex-direction: column; align-items: stretch; }
-  .cuadricula-fotos { gap: 12px; }
-  .estado-vacio { padding: 24px 16px; }
+  html { scroll-padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px)); scroll-padding-top: 88px; }
+  main { padding-top: 104px; padding-bottom: calc(100px + env(safe-area-inset-bottom, 0px)); }
+  .navegacion { position: fixed; inset: auto 0 0; min-height: 0; padding: 8px 8px calc(8px + env(safe-area-inset-bottom, 0px)); gap: 0; border-top: 1px solid var(--borde); border-bottom: 0; }
+  .navegacion h3 { position: fixed; z-index: 102; top: 8px; left: 20px; display: block; font-size: 22px; }
+  .navegacion .marca-inicio, .navegacion .logo-viajando { width: 55px; height: 55px; }
+  .navegacion > div:not(.acceso-cuenta) { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); width: 100%; gap: 4px; }
+  .navegacion > div:not(.acceso-cuenta) button { width: 100%; min-width: 0; min-height: 50px; padding: 8px 2px; font-size: 14px; line-height: 1.4; overflow-wrap: normal; }
+  .navegacion button:focus-visible { outline-offset: -3px; }
+  .formulario { margin: 28px auto; padding: 24px; }
+  .formulario h2 { font-size: 32px; }
+  .formulario button { width: 100%; min-width: 0; }
+  .filtros-recuerdos { flex-direction: column; align-items: stretch; padding: 20px; }
+  .tarjeta-recuerdo { flex-basis: 86%; }
+  .recuerdo-unico .tarjeta-recuerdo { flex-basis: 100%; }
+  .destino-recuerdo { font-size: 32px; }
+  .datos-recuerdo { padding: 18px 10px 14px; }
+  .experiencia-recuerdo { padding: 0 22px; }
+  .acciones-recuerdo button { flex: 1 1 90px; }
+  .lista-viajes { margin-top: 48px; padding-top: 28px; }
+  .tarjeta-viaje button { min-height: 44px; }
+  .pie-aplicacion { flex-direction: column; gap: 10px; margin-top: 64px; }
 }
-@media (max-width: 380px) {
-  .cuadricula-fotos { grid-template-columns: minmax(0, 1fr); }
-}
+@media (max-width: 380px) { .cuadricula-fotos { grid-template-columns: minmax(0, 1fr); } }

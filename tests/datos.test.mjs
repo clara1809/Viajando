@@ -164,3 +164,73 @@ test('Sin sesión o con un anónimo previo no se consultan documentos ni se inic
   assert.equal(prueba.escuchas.length, cantidad)
   assert.equal(prueba.render().viajes.length, 0)
 })
+
+test('Lugares OSM se guardan por usuario con ID estable, sin sobrescribir duplicados', async () => {
+  const prueba = crearHookSimulado()
+  const lugar = { id: 'way-123', nombre: 'Museo', pais: 'Italia', categoria: 'Museo', ciudad: 'Roma', ubicacion: 'Roma, Italia', lat: 41.9, lon: 12.5, url: 'https://www.openstreetmap.org/way/123' }
+  assert.equal(await prueba.render().guardarLugarTuristico(lugar), true)
+  assert.equal(await prueba.render().guardarLugarTuristico({ ...lugar, nombre: 'No sobrescribir' }), true)
+  assert.equal(prueba.documentos.size, 1)
+  const ruta = 'usuarios/prueba/porConocer/osm-way-123'
+  assert.equal(prueba.documentos.get(ruta).nombre, 'Museo')
+  assert.equal(prueba.documentos.get(ruta).osmId, 'way-123')
+  prueba.cambiarUsuario(null)
+  assert.equal(await prueba.render().guardarLugarTuristico(lugar), false)
+  assert.equal(prueba.documentos.size, 1)
+})
+
+test('Catálogo local se guarda sin API y no duplica al consultar coordenadas después', async () => {
+  const prueba = crearHookSimulado()
+  const lugar = { id: 'roma-coliseo', catalogoId: 'roma-coliseo', nombre: 'Coliseo', categoria: 'Monumento', ciudad: 'Roma', pais: 'Italia' }
+  assert.equal(await prueba.render().guardarLugarTuristico(lugar), true)
+  const ruta = 'usuarios/prueba/porConocer/catalogo-roma-coliseo'
+  const guardado = prueba.documentos.get(ruta)
+  assert.equal(guardado.origen, 'catalogo-local')
+  assert.equal(guardado.lat, undefined)
+  assert.equal(guardado.fuenteUbicacion, undefined)
+  assert.equal(await prueba.render().guardarLugarTuristico({ ...lugar, lat: 41.89, lon: 12.49, osmId: 'way-123' }), true)
+  assert.equal(prueba.documentos.size, 1)
+  prueba.fallar(true)
+  assert.equal(await prueba.render().guardarLugarTuristico({ ...lugar, catalogoId: 'paris-louvre' }), false)
+  assert.equal(prueba.documentos.size, 1)
+})
+
+test('Catálogo con ubicación de API conserva fuente y respeta lugares OSM previos', async () => {
+  const prueba = crearHookSimulado()
+  const lugar = { catalogoId: 'roma-coliseo', nombre: 'Coliseo', ciudad: 'Roma', pais: 'Italia', lat: 41.89, lon: 12.49, osmId: 'way-123', ubicacion: 'Roma, Italia', url: 'https://www.openstreetmap.org/way/123' }
+  assert.equal(await prueba.render().guardarLugarTuristico(lugar), true)
+  const guardado = prueba.documentos.get('usuarios/prueba/porConocer/catalogo-roma-coliseo')
+  assert.equal(guardado.lat, 41.89)
+  assert.equal(guardado.fuenteUbicacion, 'Nominatim / OpenStreetMap')
+  prueba.documentos.delete('usuarios/prueba/porConocer/catalogo-roma-coliseo')
+  prueba.documentos.set('usuarios/prueba/porConocer/osm-way-123', { nombre: 'Coliseo previo' })
+  assert.equal(await prueba.render().guardarLugarTuristico(lugar), true)
+  assert.equal(prueba.documentos.size, 1)
+  assert.equal(prueba.documentos.has('usuarios/prueba/porConocer/catalogo-roma-coliseo'), false)
+})
+
+test('Atracciones Wikidata se guardan por usuario con ID estable sin duplicar ni sobrescribir', async () => {
+  const prueba = crearHookSimulado()
+  const lugar = { id: 'Q123', wikidataId: 'Q123', nombre: 'Museo', categoria: 'Museo', ciudad: 'Tokio', pais: 'Japón', lat: 35.67, lon: 139.76, url: 'https://www.wikidata.org/wiki/Q123' }
+  assert.equal(await prueba.render().guardarLugarTuristico(lugar), true)
+  assert.equal(await prueba.render().guardarLugarTuristico({ ...lugar, nombre: 'No sobrescribir' }), true)
+  assert.equal(prueba.documentos.size, 1)
+  const guardado = prueba.documentos.get('usuarios/prueba/porConocer/wikidata-Q123')
+  assert.equal(guardado.nombre, 'Museo')
+  assert.equal(guardado.origen, 'wikidata')
+  assert.equal(guardado.fuenteUbicacion, 'Wikidata')
+  assert.equal(await prueba.render().guardarLugarTuristico({ ...lugar, wikidataId: 'Q12/../otro' }), false)
+  prueba.cambiarUsuario(null)
+  assert.equal(await prueba.render().guardarLugarTuristico(lugar), false)
+})
+
+test('Ciudad Nominatim se guarda aunque no haya atracciones, sin duplicados', async () => {
+  const prueba = crearHookSimulado()
+  const lugar = { id: 'relation-123', osmId: 'relation-123', nombre: 'Destino', ciudad: 'Destino', pais: 'País', origen: 'nominatim', lat: 1, lon: 2, url: 'https://www.openstreetmap.org/relation/123' }
+  assert.equal(await prueba.render().guardarLugarTuristico(lugar), true)
+  assert.equal(await prueba.render().guardarLugarTuristico(lugar), true)
+  assert.equal(prueba.documentos.size, 1)
+  const guardado = prueba.documentos.get('usuarios/prueba/porConocer/osm-relation-123')
+  assert.equal(guardado.origen, 'nominatim')
+  assert.equal(guardado.fuenteUbicacion, 'Nominatim / OpenStreetMap')
+})

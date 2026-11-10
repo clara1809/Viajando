@@ -3,22 +3,22 @@
   max-width: 720px;
   margin: 36px auto 0;
   padding: 20px clamp(8px, 2vw, 20px) 16px;
-  background: #F8F5F0;
-  color: #785A46;
+  background: var(--marfil);
+  color: var(--oliva-profundo);
   text-align: center;
   border-radius: 12px;
 }
 
 .mapa-recuerdos h2 {
   margin: 0 0 14px;
-  color: #785A46;
+  color: var(--oliva-profundo);
   font-weight: normal;
   font-size: clamp(21px, 3vw, 26px);
 }
 
 .mapa-recuerdos .contador-paises {
   margin: 12px 0 0;
-  color: #785A46;
+  color: var(--oliva-profundo);
   text-align: center;
   font-size: 14px;
 }
@@ -31,23 +31,23 @@
 }
 
 .mapa-recuerdos .pais-mapa {
-  fill: #E8E5E0;
-  stroke: #B5ADA3;
+  fill: var(--arena);
+  stroke: var(--borde);
   stroke-width: 0.35px;
 }
 
 .mapa-recuerdos .pais-visitado {
-  fill: #654936;
+  fill: var(--oliva-profundo);
 }
 
 .mapa-recuerdos .pais-mapa:hover {
-  stroke: #785A46;
+  stroke: var(--oliva-profundo);
   stroke-width: 0.7px;
 }
 
 .mapa-recuerdos .aviso-paises {
   margin: 20px 0 0;
-  color: #785A46;
+  color: var(--oliva-profundo);
   font-size: 14px;
   overflow-wrap: anywhere;
 }
@@ -60,14 +60,14 @@
   z-index: 200;
   max-width: min(240px, calc(100vw - 16px));
   padding: 7px 11px;
-  border: 1px solid #E0D6CA;
+  border: 1px solid var(--borde);
   border-radius: 6px;
-  background: #EDE5DA;
-  color: #654936;
-  font-family: "finder", sans-serif;
+  background: var(--papel);
+  color: var(--oliva-profundo);
+  font-family: var(--sans);
   font-size: 13px;
   line-height: 1.4;
-  box-shadow: 0 2px 8px rgba(65, 45, 30, 0.08);
+  box-shadow: 0 2px 8px #292C2710;
   pointer-events: none;
   opacity: 0;
   visibility: hidden;
@@ -93,3 +93,10 @@
     margin-bottom: 10px;
   }
 }
+
+.mapa-recuerdos { max-width: 920px; margin-top: 64px; padding: 36px 20px 24px; border: 1px solid var(--borde); background: var(--arena); }
+.mapa-recuerdos h2 { color: var(--carbon); font-size: clamp(30px, 4vw, 42px); }
+.mapa-recuerdos .contador-paises, .mapa-recuerdos .aviso-paises { color: var(--texto-suave); font-size: 12px; }
+.mapa-recuerdos .pais-mapa { fill: #D8DBCF; stroke: #A1A68F; }
+.mapa-recuerdos .pais-visitado { fill: var(--oliva-profundo); }
+@media (max-width: 600px) { .mapa-recuerdos { margin-top: 40px; padding: 28px 12px 20px; } }

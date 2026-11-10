@@ -52,7 +52,7 @@ export default function AccesoCuenta({ usuario, bloqueado = false, actualizarUsu
 
   return (
     <main className="pantalla-acceso">
-      <header className="bienvenida-acceso"><h1 translate="no">VIAJANDO</h1><h2>Tu mundo, tus historias</h2></header>
+      <header className="bienvenida-acceso"><img className="logo-acceso" src="/viajando.logo.svg" alt="" width="72" height="72" /><h1 translate="no">VIAJANDO</h1><h2>Tu mundo, tus historias</h2></header>
       <section className="panel-acceso" aria-labelledby="titulo-cuenta">
         <h2 id="titulo-cuenta"><IconoUsuario />{modo === 'registrar' ? 'Creá tu cuenta' : 'Iniciar sesión'}</h2>
         <p>{modo === 'registrar' ? 'Un lugar para guardar tus próximas historias.' : 'Volvé a tus viajes y a los lugares que soñás conocer.'}</p>
