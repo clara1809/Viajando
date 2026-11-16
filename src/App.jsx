@@ -416,7 +416,6 @@ function iniciarViajeDesdeLugar(destinoPendiente) {
 {seccion === 'destinos' && (
   <section className="seccion-destinos">
     <h1>Por conocer</h1>
-    <p>Todos esos lugares que todavía soñás visitar.</p>
 
     <form onSubmit={agregarLugar} className="formulario" noValidate aria-busy={guardando}>
       <h2>Agregar un destino</h2>
