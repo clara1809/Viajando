@@ -133,14 +133,13 @@ main > p[role='alert'] { color: var(--error); background: #F6EBE5; border-color:
 }
 @media (max-width: 380px) { .cuadricula-fotos { grid-template-columns: minmax(0, 1fr); } }
 
-/* Paneles coherentes y separados suavemente del fondo. */
-.seccion-viajes > .formulario,
-.seccion-destinos > .formulario,
+/* El buscador comparte el acabado original de los formularios. */
 .filtros-recuerdos {
-  border: 1.5px solid var(--oliva);
+  border: 1px solid var(--borde);
+  border-top: 3px solid var(--oliva);
   border-radius: 12px;
-  background: linear-gradient(to bottom, #E9EDE3, var(--papel) 180px);
-  box-shadow: 0 8px 24px #292C2710;
+  background: linear-gradient(to bottom, #E9EDE3 0, #F1F3EB 100px, var(--papel) 220px);
+  box-shadow: 0 8px 32px #292C2704;
 }
 .formulario-viaje { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 20px; max-width: 800px; padding: 28px 32px; }
 .formulario-viaje > h2, .formulario-viaje > p, .formulario-viaje > button,
