@@ -1,6 +1,7 @@
 
 import { lazy, Suspense, useRef, useState } from 'react'
 import Inicio from './components/Inicio'
+import TarjetaDestino from './components/TarjetaDestino'
 import LugaresTuristicos from './components/LugaresTuristicos'
 import { crearConsultaLugares } from './services/lugares'
 import AccesoCuenta from './components/AccesoCuenta'
@@ -26,7 +27,6 @@ function Aplicacion({ datos }) {
   const [erroresLugar, setErroresLugar] = useState({})
   const [confirmacion, setConfirmacion] = useState('')
   const [origenPendiente, setOrigenPendiente] = useState(null)
-  const [lugarEditando, setLugarEditando] = useState(null)
   const ocupadoViajes = guardando || cargando.viajes || Boolean(errores.sesion || errores.viajes) || Boolean(origenPendiente && (cargando.porConocer || errores.porConocer))
   const ocupadoLugares = guardando || cargando.porConocer || Boolean(errores.sesion || errores.porConocer)
   const [lugar, setLugar] = useState('')
@@ -72,7 +72,6 @@ async function agregarViaje(evento) {
     ? await convertirLugarEnViaje(origenPendiente, datosViaje)
     : await guardarRegistro('viajes', datosViaje, viajeEditando)
   if (!guardado) return
-  if (convirtiendo && lugarEditando === origenPendiente) limpiarFormularioLugar()
   limpiarFormularioViaje()
   setBusqueda('')
   setConfirmacion(convirtiendo ? '¡Un destino soñado se convirtió en recuerdo! El viaje se guardó y se quitó de Por conocer.' : editando ? 'Los cambios del viaje se guardaron correctamente.' : 'Tu viaje se guardó correctamente.')
@@ -200,35 +199,24 @@ async function agregarLugar(evento) {
     motivo: motivo.trim()
   }
 
-  const guardado = await guardarRegistro('porConocer', nuevoLugar, lugarEditando)
+  const guardado = await guardarRegistro('porConocer', nuevoLugar)
   if (!guardado) return
-  setConfirmacion(lugarEditando !== null ? 'El destino se actualizó correctamente.' : 'El destino se guardó en Por conocer.')
+  setConfirmacion('El destino se guardó en Por conocer.')
   limpiarFormularioLugar()
 }
 
 function limpiarFormularioLugar() {
   setErroresLugar({})
-  setLugarEditando(null)
 
   setLugar('')
   setPaisLugar('')
   setMotivo('')
 }
 
-function editarLugar(destinoPendiente) {
-  setErroresLugar({})
-  setConfirmacion('')
-  setLugarEditando(destinoPendiente.id)
-  setLugar(destinoPendiente.nombre)
-  setPaisLugar(destinoPendiente.pais)
-  setMotivo(destinoPendiente.motivo || '')
-}
-
 async function eliminarLugar(id) {
   if (!window.confirm('¿Querés eliminar este destino de Por conocer?')) return
   setConfirmacion('')
   const eliminado = await eliminarRegistro('porConocer', id)
-  if (eliminado && lugarEditando === id) limpiarFormularioLugar()
   if (eliminado) setConfirmacion('El destino se eliminó correctamente.')
 }
 
@@ -285,41 +273,58 @@ function iniciarViajeDesdeLugar(destinoPendiente) {
             <h1>Mis viajes</h1>
             <p>Guardá tus aventuras y recuerdos.</p>
 
-            <form onSubmit={agregarViaje} className="formulario" noValidate aria-busy={guardando}>
+            <form onSubmit={agregarViaje} className="formulario formulario-viaje" noValidate aria-busy={guardando}>
               <h2>{viajeEditando !== null ? 'Editar viaje' : origenPendiente ? '¡Ya lo conocí!' : 'Agregar un viaje'}</h2>
               {origenPendiente && <p className="ayuda-foto">Completá tu experiencia. El destino se quitará de Por conocer únicamente cuando se guarde el viaje.</p>}
+              <div className="campo-viaje">
               <label htmlFor="viaje-destino">Ciudad o destino *</label>
               <input id="viaje-destino" type="text" placeholder="Ciudad o destino" required value={destino} disabled={guardando}
                 aria-invalid={Boolean(erroresFormulario.destino)} aria-describedby={erroresFormulario.destino ? 'error-destino' : undefined}
                 onChange={e => setDestino(e.target.value)} />
               {erroresFormulario.destino && <p id="error-destino" className="error-campo" role="alert">{erroresFormulario.destino}</p>}
+              </div>
+              <div className="campo-viaje">
               <label htmlFor="viaje-pais">País *</label>
               <input id="viaje-pais" type="text" placeholder="País" required value={pais} disabled={guardando}
                 aria-invalid={Boolean(erroresFormulario.pais)} aria-describedby={erroresFormulario.pais ? 'error-pais' : undefined}
                 onChange={e => setPais(e.target.value)} />
               {erroresFormulario.pais && <p id="error-pais" className="error-campo" role="alert">{erroresFormulario.pais}</p>}
+              </div>
+              <div className="campo-viaje">
               <label htmlFor="viaje-fecha">Fecha del viaje *</label>
               <input id="viaje-fecha" type="date" required max={fechaLocal()} value={fecha} disabled={guardando}
                 aria-invalid={Boolean(erroresFormulario.fecha)} aria-describedby={erroresFormulario.fecha ? 'error-fecha' : undefined}
                 onChange={e => setFecha(e.target.value)} />
               {erroresFormulario.fecha && <p id="error-fecha" className="error-campo" role="alert">{erroresFormulario.fecha}</p>}
+              </div>
+              <div className="campo-viaje campo-completo">
               <label htmlFor="viaje-descripcion">Tu experiencia</label>
-              <textarea id="viaje-descripcion" rows={7} placeholder="Contá tu experiencia, los momentos que querés recordar…" value={descripcion}
+              <textarea id="viaje-descripcion" rows={3} placeholder="Contá tu experiencia, los momentos que querés recordar…" value={descripcion}
                 disabled={guardando} onChange={e => setDescripcion(e.target.value)} />
+              </div>
+              <details className="extras-viaje" open={Boolean(viajeEditando !== null || erroresFormulario.foto || erroresFormulario.fotosAdicionales) || undefined}>
+                <summary>Fotografías y lugares destacados (opcional)</summary>
+              <div className="campo-viaje campo-completo">
               <label htmlFor="viaje-destacados">Lugares destacados (opcional)</label>
               <textarea id="viaje-destacados" placeholder="Un lugar por línea" value={destacados} disabled={guardando}
                 onChange={e => setDestacados(e.target.value)} />
+              </div>
+              <div className="campo-viaje campo-completo">
               <label htmlFor="viaje-foto">URL de la fotografía principal (opcional)</label>
               <input id="viaje-foto" type="url" placeholder="https://ejemplo.com/mi-viaje.jpg" value={foto} disabled={guardando}
                 aria-invalid={Boolean(erroresFormulario.foto)} aria-describedby="ayuda-foto error-foto"
                 onChange={e => setFoto(e.target.value)} />
               <p id="ayuda-foto" className="ayuda-foto">Usá enlaces directos a imágenes públicas. Si una imagen no puede cargarse, mostraremos un reemplazo.</p>
               <p id="error-foto" className="error-campo" role="alert">{erroresFormulario.foto}</p>
+              </div>
+              <div className="campo-viaje campo-completo">
               <label htmlFor="fotos-adicionales">Más fotografías (opcional)</label>
               <textarea id="fotos-adicionales" placeholder="Una URL de imagen por línea" value={fotosAdicionales} disabled={guardando}
                 aria-invalid={Boolean(erroresFormulario.fotosAdicionales)} aria-describedby="error-fotos-adicionales"
                 onChange={e => setFotosAdicionales(e.target.value)} />
               <p id="error-fotos-adicionales" className="error-campo" role="alert">{erroresFormulario.fotosAdicionales}</p>
+              </div>
+              </details>
               <p className="ayuda-foto">* Campos obligatorios</p>
               <button type="submit" disabled={ocupadoViajes}>{guardando ? 'Guardando…' : viajeEditando !== null ? 'Guardar cambios' : 'Guardar viaje'}</button>
             </form>
@@ -413,7 +418,7 @@ function iniciarViajeDesdeLugar(destinoPendiente) {
     <p>Todos esos lugares que todavía soñás visitar.</p>
 
     <form onSubmit={agregarLugar} className="formulario" noValidate aria-busy={guardando}>
-      <h2>{lugarEditando !== null ? 'Editar destino' : 'Agregar un destino'}</h2>
+      <h2>Agregar un destino</h2>
 
       <label htmlFor="lugar-nombre">Destino *</label>
       <input
@@ -446,12 +451,8 @@ function iniciarViajeDesdeLugar(destinoPendiente) {
                 onChange={(e) => setMotivo(e.target.value)}
       />
 
-      <button type="submit" disabled={ocupadoLugares}>{guardando ? 'Guardando…' : lugarEditando !== null ? 'Guardar cambios' : 'Guardar destino'}</button>
+      <button type="submit" disabled={ocupadoLugares}>{guardando ? 'Guardando…' : 'Guardar destino'}</button>
     </form>
-
-    {lugarEditando !== null && (
-      <button type="button" disabled={guardando} onClick={limpiarFormularioLugar}>Cancelar edición</button>
-    )}
 
     <LugaresTuristicos consultar={consultarLugares} guardar={guardarLugarTuristico} guardados={lugares} bloqueado={ocupadoLugares} />
 
@@ -463,20 +464,9 @@ function iniciarViajeDesdeLugar(destinoPendiente) {
       )}
 
       {lugares.map((lugar) => (
-        <div className="tarjeta-viaje" key={lugar.id}>
-          <h3>{lugar.nombre}</h3>
-          <p>{lugar.pais}</p>
-          <p>{lugar.motivo}</p>
-          {lugar.categoria && <p>{lugar.categoria}</p>}
-          {lugar.catalogoId && <p>{lugar.ciudad} · Selección local de VIAJANDO</p>}
-          {lugar.ubicacion && <p>{lugar.ubicacion}</p>}
-
-          <button disabled={ocupadoLugares || ocupadoViajes} onClick={() => iniciarViajeDesdeLugar(lugar)}>¡Ya lo conocí!</button>
-          <button disabled={ocupadoLugares} onClick={() => editarLugar(lugar)}>Editar</button>
-          <button disabled={ocupadoLugares} onClick={() => eliminarLugar(lugar.id)}>
-            Eliminar
-          </button>
-        </div>
+        <TarjetaDestino key={lugar.id} lugar={lugar} bloqueado={ocupadoLugares || ocupadoViajes}
+          guardar={datos => guardarRegistro('porConocer', datos, lugar.id)}
+          eliminar={() => eliminarLugar(lugar.id)} convertir={() => iniciarViajeDesdeLugar(lugar)} />
       ))}
     </div>
   </section>

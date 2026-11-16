@@ -132,3 +132,36 @@ main > p[role='alert'] { color: var(--error); background: #F6EBE5; border-color:
   .pie-aplicacion { flex-direction: column; gap: 10px; margin-top: 64px; }
 }
 @media (max-width: 380px) { .cuadricula-fotos { grid-template-columns: minmax(0, 1fr); } }
+
+/* Paneles coherentes y separados suavemente del fondo. */
+.seccion-viajes > .formulario,
+.seccion-destinos > .formulario,
+.filtros-recuerdos {
+  border: 1.5px solid var(--oliva);
+  border-radius: 12px;
+  background: linear-gradient(to bottom, #E9EDE3, var(--papel) 180px);
+  box-shadow: 0 8px 24px #292C2710;
+}
+.formulario-viaje { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 20px; max-width: 800px; padding: 28px 32px; }
+.formulario-viaje > h2, .formulario-viaje > p, .formulario-viaje > button,
+.formulario-viaje .campo-completo, .extras-viaje { grid-column: 1 / -1; }
+.formulario-viaje h2 { margin-bottom: 4px; }
+.campo-viaje { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.formulario-viaje label { margin-top: 0; }
+.formulario-viaje textarea[rows] { min-height: 90px; }
+.formulario-viaje input { min-height: 44px; padding: 10px 12px; }
+.formulario-viaje > button { justify-self: start; margin-top: 0; }
+.extras-viaje { border-top: 1px solid var(--borde); padding-top: 12px; }
+.extras-viaje summary { cursor: pointer; color: var(--oliva-profundo); font-size: 14px; padding: 4px 0; }
+.extras-viaje .campo-viaje { margin-top: 16px; }
+.acciones-destino { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 20px; }
+.tarjeta-viaje .acciones-destino button { margin: 0; }
+.tarjeta-viaje .confirmacion-destino { flex: 1 1 200px; margin: 0; color: var(--oliva-profundo); font-size: 13px; }
+.edicion-destino { margin: 0; max-width: none; padding: 0; border: 0; box-shadow: none; background: transparent; }
+.edicion-destino textarea[rows] { min-height: 100px; }
+.edicion-destino .acciones-destino { margin-top: 4px; }
+@media (max-width: 600px) {
+  .formulario-viaje { grid-template-columns: minmax(0, 1fr); padding: 24px; gap: 14px; }
+  .edicion-destino .acciones-destino { width: 100%; }
+  .edicion-destino .acciones-destino button { width: auto; flex: 1 1 130px; }
+}
