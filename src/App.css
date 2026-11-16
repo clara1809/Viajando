@@ -141,7 +141,6 @@ main > p[role='alert'] { color: var(--error); background: #F6EBE5; border-color:
 /* El buscador comparte el acabado original de los formularios. */
 .filtros-recuerdos {
   border: 1px solid var(--borde);
-  border-top: 3px solid var(--oliva);
   border-radius: 12px;
   background: var(--arena-suave);
   box-shadow: 0 8px 32px #292C2704;
