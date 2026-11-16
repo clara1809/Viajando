@@ -120,7 +120,7 @@ function limpiarFormularioViaje() {
 
 function iniciarArrastre(evento) {
   arrastreRef.current = null
-  if (evento.target.closest('.fotos-del-viaje, .acciones-recuerdo')) return
+  if (evento.target.closest('.fotos-del-viaje, .acciones-recuerdo, .acciones-destino, .edicion-destino')) return
   if (evento.pointerType !== 'mouse' || evento.button !== 0) return
   arrastreRef.current = {
     inicioX: evento.clientX,
@@ -156,7 +156,7 @@ function terminarArrastre(evento) {
     carrusel.releasePointerCapture(evento.pointerId)
   }
   if (arrastre.movido) {
-    const tarjetas = [...carrusel.querySelectorAll('.tarjeta-recuerdo')]
+    const tarjetas = [...carrusel.querySelectorAll('.tarjeta-recuerdo, .tarjeta-viaje')]
     const posiciones = tarjetas.map((tarjeta) => tarjeta.offsetLeft - tarjetas[0].offsetLeft)
     const masCercana = posiciones.reduce((anterior, actual) =>
       Math.abs(actual - carrusel.scrollLeft) < Math.abs(anterior - carrusel.scrollLeft) ? actual : anterior
@@ -171,8 +171,9 @@ function movimientoSuave() {
 
 function navegarRecuerdos(evento) {
   if (evento.target !== evento.currentTarget) return
-  const carrusel = carruselRef.current
-  const tarjeta = carrusel.querySelector('.tarjeta-recuerdo')
+  const carrusel = evento.currentTarget
+  const tarjeta = carrusel.querySelector('.tarjeta-recuerdo, .tarjeta-viaje')
+  if (!tarjeta) return
   const paso = tarjeta.getBoundingClientRect().width + 24
   if (evento.key === 'ArrowRight' || evento.key === 'ArrowLeft') {
     evento.preventDefault()
@@ -463,11 +464,32 @@ function iniciarViajeDesdeLugar(destinoPendiente) {
         <div className="estado-vacio"><p>Todos los grandes viajes empiezan con un destino soñado.</p><button type="button" onClick={() => document.getElementById('lugar-nombre')?.focus()}>Guardá tu primer destino</button></div>
       )}
 
+      {lugares.length > 0 && (
+        <div className={'carrusel-recuerdos carrusel-destinos' + (lugares.length === 1 ? ' destino-unico' : '')}
+          role="region" aria-label="Destinos pendientes. Usá las flechas del teclado para desplazarte." tabIndex={0}
+          onPointerDown={iniciarArrastre} onPointerMove={moverArrastre}
+          onPointerUp={terminarArrastre} onPointerCancel={terminarArrastre}
+          onLostPointerCapture={terminarArrastre}
+          onPointerLeave={evento => {
+            if (arrastreRef.current?.activo && !arrastreRef.current.movido) terminarArrastre(evento)
+          }}
+          onDragStart={evento => {
+            if (!evento.target.closest('.edicion-destino')) evento.preventDefault()
+          }}
+          onClickCapture={evento => {
+            if (evento.detail > 0 && arrastreRef.current?.movido) {
+              evento.preventDefault()
+              evento.stopPropagation()
+            }
+          }}
+          onKeyDown={navegarRecuerdos}>
       {lugares.map((lugar) => (
         <TarjetaDestino key={lugar.id} lugar={lugar} bloqueado={ocupadoLugares || ocupadoViajes}
           guardar={datos => guardarRegistro('porConocer', datos, lugar.id)}
           eliminar={() => eliminarLugar(lugar.id)} convertir={() => iniciarViajeDesdeLugar(lugar)} />
       ))}
+        </div>
+      )}
     </div>
   </section>
 )}

@@ -168,3 +168,26 @@ main > p[role='alert'] { color: var(--error); background: #F6EBE5; border-color:
   .edicion-destino .acciones-destino { width: 100%; }
   .edicion-destino .acciones-destino button { width: auto; flex: 1 1 130px; }
 }
+
+/* Destinos pendientes: el mismo acabado del formulario, en un álbum horizontal. */
+.carrusel-destinos { padding: 28px 24px 36px; }
+.carrusel-destinos .tarjeta-viaje {
+  flex: 0 0 min(480px, 82%);
+  min-width: 0;
+  margin: 0;
+  scroll-snap-align: start;
+  border: 2px solid var(--oliva-profundo);
+  border-radius: 12px;
+  background: linear-gradient(to bottom, #E9EDE3 0, #F1F3EB 100px, var(--papel) 220px);
+  box-shadow: 0 0 28px #59614926, 0 12px 32px #292C2720;
+}
+.carrusel-destinos .tarjeta-viaje h3 { color: var(--oliva-profundo); }
+.carrusel-destinos .tarjeta-viaje > p { white-space: pre-wrap; }
+.carrusel-destinos .edicion-destino { cursor: auto; user-select: text; }
+.destino-unico { justify-content: center; cursor: default; }
+.destino-unico .tarjeta-viaje { flex-basis: min(700px, 100%); }
+@media (max-width: 600px) {
+  .carrusel-destinos { padding-inline: 16px; }
+  .carrusel-destinos .tarjeta-viaje { flex-basis: 90%; padding: 24px; }
+  .destino-unico .tarjeta-viaje { flex-basis: 100%; }
+}
