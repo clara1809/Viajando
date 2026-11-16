@@ -55,7 +55,7 @@ main > section > h1 + p { max-width: 560px; margin: 0 auto 40px; }
 main > p[role='status'] { background: var(--arena); }
 main > p[role='alert'] { color: var(--error); background: #F6EBE5; border-color: #DCC1B5; }
 .lista-viajes { margin-top: 72px; padding-top: 40px; border-top: 1px solid var(--borde); }
-.lista-viajes > h2 { margin: 0 0 32px; }
+.lista-viajes > h2 { margin: 0 0 32px; color: var(--oliva-profundo); }
 .tarjeta-viaje { max-width: 700px; margin: 20px auto; padding: clamp(24px, 4vw, 36px); background: var(--papel); border: 1px solid var(--borde); border-radius: 10px; text-align: left; box-shadow: 0 4px 20px #292C2704; }
 .tarjeta-viaje h3 { color: var(--carbon); font-size: 36px; margin: 0 0 12px; }
 .tarjeta-viaje p { font-size: 14px; margin: 8px 0; }
